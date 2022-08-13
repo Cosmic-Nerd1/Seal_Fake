@@ -33,9 +33,13 @@ tfidf_train=tfidf_vectorizer.fit_transform(x_train)
 tfidf_test=tfidf_vectorizer.transform(x_test)
 
 #Initialize a PassiveAggressiveClassifier
-y_pred = pac.predict(tfidf_test)
 pac = PassiveAggressiveClassifier(max_iter = 50)
-pac.fit(f'accuracy : {round(score*100, 2)}%')
+pac.fit(tfidf_train, y_train)
+
+#Predict on the test set and calculate accuracy
+y_pred = pac.predict(tfidf_test)
+score = accuracy_score(y_test, y_pred)
+pac.fit(f'Accuracy : {round(score*100, 2)}%')
 
 #Build Confusion matrix
 confusion_matrix(y_test, y_pred, labels = ['FAKE', 'REAL'])
